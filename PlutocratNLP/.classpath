@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5">
+		<attributes>
+			<attribute name="module" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/byte-buddy-1.10.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/classmate-1.5.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/commons-codec-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/dom4j-2.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/FastInfoset-1.2.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/hibernate-commons-annotations-5.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/hibernate-core-5.4.9.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/httpclient-4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/httpcore-4.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/istack-commons-runtime-3.0.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jandex-2.1.1.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/javassist-3.6.0.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/javassist-3.24.0-GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/javax.activation-api-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/javax.persistence-api-2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jaxb-api-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jaxb-impl-2.1.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jaxb-runtime-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jaxrs-api-2.0-beta-2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jboss-logging-3.3.2.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jcip-annotations-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jcl-over-slf4j-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jettison-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/jsr250-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/mysql-connector-java-8.0.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/resteasy-jaxb-provider-2.0-beta-2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/resteasy-jaxrs-2.0-beta-2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/resteasy-jettison-provider-2.0-beta-2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/scannotation-1.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/sjsxp-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/slf4j-simple-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/stax-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/stax-ex-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/JPALab/lib/txw2-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/i352770/OneDrive - SAP SE/Documents/javaProjects/parsing/jsoup-1.12.1.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
