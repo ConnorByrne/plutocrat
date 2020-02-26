@@ -2,17 +2,12 @@ import mysql.connector
 import tensorflow as td
 from tensorflow import keras
 import numpy as np
-from yahoo_finance import Share
+import mysql.connector
+import pandas_datareader.data as web
+import datetime as dt
+from datetime import date
+import re
 
-class Company:
-    sentiments=[]
-    def __init__(self,id,name, tickerSymbol,):
-        self.id=id
-        self.name=name,
-        self.tickerSymbol=tickerSymbol
-
-    def addSentiment(self,sentiemnt):
-        self.sentiments.append(sentiemnt)
 
 db = mysql.connector.connect(
     host="localhost",
@@ -20,28 +15,45 @@ db = mysql.connector.connect(
     passwd="root",
     database = "dt354") 
 
+class Company:
+    sentiment = []
+    def __init__(self,name,ticker):
+        self.name = name
+        self.ticker=ticker
+    
+    def addSentiment(self,data):
+        self.sentiment.append(data)
+    
+
+def getPrice(symbol,dateString):
+    
+    dateInt = re.findall(r'\d+',dateString)
+    start = dt.datetime(int(dateInt[0]),int(dateInt[1]),int(dateInt[2]))
+    end = date.today()
+    df=web.get_data_yahoo(symbol,start=start,end=end)
+    return df.head(1)
 
 myCursor = db.cursor()
 
-#myCursor.execute("SELECT* FROM company, sentiment, company_sentiment WHERE(company.id=company_sentiment.Company_id) AND (sentiment.id=company_sentiment.sentimentData_id)")
-myCursor.execute("SELECT id FROM company")
+myCursor.execute("SELECT* FROM company, sentiment, company_sentiment WHERE(company.id=company_sentiment.Company_id) AND (sentiment.id=company_sentiment.sentimentData_id)")
 companies=[]
-yahoo =[]
+yahoo = []
 for x in myCursor:
-    id = x
-    name = myCursor.execute("SELECT companyName FROM company WHERE id="+id)
-    tickerSymbol = myCursor.execute("SELECT tickerSymbol FROM company)
-    c1=Company(id,name,tickerSymbol)
-    for y in tickerSymbol:
-        yahoo.append(Share(tickerSymbol))
-    sentiments = myCursor.execute("SELECT sentiment.data FROM company, sentiment, company_sentiment where company.id="+id+" AND (company.id=company_sentiment.Company_id) AND(sentiment.id=company_sentiment.sentimentData_id)")
-    for y in sentiments:
-        c1.addSentiment(y)
-    companies.append(c1)
+    companies.append(x)
+    dateString = (x[5])
+    if(dateString[0]=="0"):
+        dateString = "2"+dateString
+    symbol=x[2]
+    yahoo.append((x[1],x[5],getPrice(symbol,dateString)))
+    
+trainCompanies = companies[:int(len(companies)*.8)]
+testCompanies = companies[int(len(companies)*.8):]
 
-
+trainYahoo = yahoo[:int(len(yahoo)*.8)]
+testYahoo = yahoo[int(len(yahoo)*.8):]
 
 model = keras.Sequential()
+#model.add(keras.layers.Flatten(input_shap=(len(companies),len(yahoo))))
 model.add(keras.layers.Embesdding(10000,16))
 model.add(keras.layers.GlobalAveragePooling1D())
 model.ass(keras.layers.Dense(16, activation="relu"))
@@ -50,9 +62,9 @@ model.add(keras.layers.Dense(1,activation="sigmoid"))
 model.summary()
 model.compile(optimizer = "adam", loss="sparse_categorical_crossentrophy", metrics=["accuracy"])
 
-model.fit(myCursor,yahoo,epochs=40)
+model.fit(trainCompanies,trainYahoo,epochs=40)
 
-predict = model.predict(yahoo)
-
-print(predict)
+#predict = model.predict(testCompanies,testYahoo)
+test_acc = model.evaluate(testCompanies,testYahoo)
+print("tested accuracy:", test_acc)
 
