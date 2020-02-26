@@ -26,12 +26,14 @@ class Company:
     
 
 def getPrice(symbol,dateString):
-    
-    dateInt = re.findall(r'\d+',dateString)
-    start = dt.datetime(int(dateInt[0]),int(dateInt[1]),int(dateInt[2]))
-    end = date.today()
-    df=web.get_data_yahoo(symbol,start=start,end=end)
-    return df.head(1)
+    try:
+        dateInt = re.findall(r'\d+',dateString)
+        start = dt.datetime(int(dateInt[0]),int(dateInt[1]),int(dateInt[2]))
+        end = date.today()
+        df=web.get_data_yahoo(symbol,start=start,end=end)
+        return df.head(1)
+    except:
+        return "Error"
 
 myCursor = db.cursor()
 
@@ -39,6 +41,7 @@ myCursor.execute("SELECT* FROM company, sentiment, company_sentiment WHERE(compa
 companies=[]
 yahoo = []
 for x in myCursor:
+    
     companies.append(x)
     dateString = (x[5])
     if(dateString[0]=="0"):
@@ -54,7 +57,7 @@ testYahoo = yahoo[int(len(yahoo)*.8):]
 
 model = keras.Sequential()
 #model.add(keras.layers.Flatten(input_shap=(len(companies),len(yahoo))))
-model.add(keras.layers.Embesdding(10000,16))
+model.add(keras.layers.Embedding(10000,16))
 model.add(keras.layers.GlobalAveragePooling1D())
 model.ass(keras.layers.Dense(16, activation="relu"))
 model.add(keras.layers.Dense(1,activation="sigmoid"))
