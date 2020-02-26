@@ -48,6 +48,7 @@ for x in myCursor:
         dateString = "2"+dateString
     symbol=x[2]
     yahoo.append((x[1],x[5],getPrice(symbol,dateString)))
+    print (x)
     
 trainCompanies = companies[:int(len(companies)*.8)]
 testCompanies = companies[int(len(companies)*.8):]
@@ -59,7 +60,7 @@ model = keras.Sequential()
 #model.add(keras.layers.Flatten(input_shap=(len(companies),len(yahoo))))
 model.add(keras.layers.Embedding(10000,16))
 model.add(keras.layers.GlobalAveragePooling1D())
-model.ass(keras.layers.Dense(16, activation="relu"))
+model.add(keras.layers.Dense(16, activation="relu"))
 model.add(keras.layers.Dense(1,activation="sigmoid"))
 
 model.summary()
