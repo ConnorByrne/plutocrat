@@ -56,6 +56,12 @@ testCompanies = companies[int(len(companies)*.8):]
 trainYahoo = yahoo[:int(len(yahoo)*.8)]
 testYahoo = yahoo[int(len(yahoo)*.8):]
 
+companiesArray = np.asarray(trainCompanies)
+yahooArray = np.asarray(trainYahoo)
+
+testYahooArray = np.asarray(testYahoo)
+testCompaniesArray = np.asarray(testYahoo)
+
 model = keras.Sequential()
 #model.add(keras.layers.Flatten(input_shap=(len(companies),len(yahoo))))
 model.add(keras.layers.Embedding(10000,16))
@@ -64,11 +70,11 @@ model.add(keras.layers.Dense(16, activation="relu"))
 model.add(keras.layers.Dense(1,activation="sigmoid"))
 
 model.summary()
-model.compile(optimizer = "adam", loss="sparse_categorical_crossentrophy", metrics=["accuracy"])
+model.compile(optimizer = "adam", loss="mean_squared_error", metrics=["accuracy"])
 
-model.fit(trainCompanies,trainYahoo,epochs=40)
+model.fit(companiesArray,yahooArray,epochs=40)
 
 #predict = model.predict(testCompanies,testYahoo)
-test_acc = model.evaluate(testCompanies,testYahoo)
+test_acc = model.evaluate(testCompaniesArray,testYahooArray)
 print("tested accuracy:", test_acc)
 
