@@ -8,6 +8,8 @@ import mysql.connector
 import pandas_datareader.data as web
 import datetime as dt
 from datetime import date
+from datetime import timedelta
+import pandas as pd
 import re
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -35,11 +37,19 @@ def getPrice(symbol,dateString):
     try:
         dateInt = re.findall(r'\d+',dateString)
         start = dt.datetime(int(dateInt[0]),int(dateInt[1]),int(dateInt[2]))
-        end = date.today()
+        end = start
         df=web.get_data_yahoo(symbol,start=start,end=end)
-        return df.head(1).astype(str)
+        prediction = pd.to_numeric(df['Close'])
+        price1=prediction.iloc[0]
+        start = start+timedelta(days=1)
+        end = start
+        df=web.get_data_yahoo(symbol,start=start,end=end)
+        prediction = pd.to_numeric(df['Close'])
+        price2=prediction.iloc[0]
+        priceChange= price1-price2
+        return priceChange
     except:
-        return "Error"
+        return 0.00
 
 def alphabet_position(text):
     LETTERS={letter: str(index) for index, letter in enumerate(ascii_lowercase, start=1)}
@@ -71,10 +81,9 @@ for x in myCursor:
     if(dateString[0]=="0"):
         dateString = "2"+dateString
     symbol=x[2]
-    yaho=(x[0],alphabet_position(x[5]),alphabet_position(getPrice(symbol,dateString)))
-    yahoo.append(yaho)
+    #yaho=(x[0],alphabet_position(x[5]),alphabet_position(getPrice(symbol,dateString)))
+    yahoo.append(getPrice(symbol,dateString))
     print(company)
-    print(yaho)
     
 #trainCompanies = companies[:int(len(companies)*.8)]
 #testCompanies = companies[int(len(companies)*.8):]
@@ -100,36 +109,41 @@ yahooArray=ohe.fit_transform(yahooArray).toarray()
 x_train,x_test,y_train,y_test = train_test_split(companiesArray,yahooArray,test_size=0.1)
 
 model = keras.Sequential()
-model.add(keras.layers.Dense(16, input_dim=20, activation='relu'))
+#model.add(keras.layers.Flatten(input_shape=(28,28)))
+model.add(keras.layers.Dense(16, input_dim=187, activation='relu'))
 model.add(keras.layers.Dense(12, activation='relu'))
 model.add(keras.layers.Dense(4,activation='softmax'))
 
+model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 history = model.fit(x_train,y_train,epochs=40,batch_size=64)
 
-y_pred = model.predict(x_test)
-pred=list()
+test_acc = model.evaluate(x_test,y_test)
 
-for i in range(len(y_pred)):
-    pred.append(np.argmax(y_pred[i]))
+print("Tested Accuracy: ", test_acc)
+#y_pred = model.predict(x_test)
+#pred=list()
 
-test=list()
-for i in range(len(y_test)):
-    test.append(np.argmax(y_test[i]))
+#for i in range(len(y_pred)):
+ #   pred.append(np.argmax(y_pred[i]))
 
-a=accuracy_score(pred,test)
-print("Accuracy is:", a*100)
+#test=list()
+#for i in range(len(y_test)):
+ #   test.append(np.argmax(y_test[i]))
 
-history = model.fit(x_train, y_train, validation_data=(x_test,y_test), epochs=100, batch_size=64)
+#a=accuracy_score(pred,test)
+#print("Accuracy is:", a*100)
 
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
-plt.title('Model accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Test'], loc='upper left')
-plt.show()
+#history = model.fit(x_train, y_train, validation_data=(x_test,y_test), epochs=100, batch_size=64)
+
+#plt.plot(history.history['acc'])
+#plt.plot(history.history['val_acc'])
+#plt.title('Model accuracy')
+#plt.ylabel('Accuracy')
+#plt.xlabel('Epoch')
+#plt.legend(['Train', 'Test'], loc='upper left')
+#plt.show()
 #model = keras.Sequential()
 #model.add(keras.layers.Flatten(input_shape=(len(companies),len(yahoo))))
 #model.add(keras.layers.Embedding(10000,16))
