@@ -75,51 +75,51 @@ for x in myCursor:
     #sentimentid=x[3]
     #sentimentdata=x[4]
     #sentimentdate=x[5]
-    company = (x[0],alphabet_position(x[4]),alphabet_position(x[5]))
-    companies.append(company)
+    #company = (x[0],alphabet_position(x[4]),alphabet_position(x[5]))
+    companies.append(alphabet_position(x[4]))
     dateString = (x[5])
     if(dateString[0]=="0"):
         dateString = "2"+dateString
     symbol=x[2]
     #yaho=(x[0],alphabet_position(x[5]),alphabet_position(getPrice(symbol,dateString)))
     yahoo.append(getPrice(symbol,dateString))
-    print(company)
+    print(alphabet_position(x[4]))
     
-#trainCompanies = companies[:int(len(companies)*.8)]
-#testCompanies = companies[int(len(companies)*.8):]
+trainCompanies = companies[:int(len(companies)*.8)]
+testCompanies = companies[int(len(companies)*.8):]
 
-#trainYahoo = yahoo[:int(len(yahoo)*.8)]
-#testYahoo = yahoo[int(len(yahoo)*.8):]
+trainYahoo = yahoo[:int(len(yahoo)*.8)]
+testYahoo = yahoo[int(len(yahoo)*.8):]
 
 companiesArray = np.asarray(companies)
 yahooArray = np.asarray(yahoo)
 
-#testYahooArray = np.asarray(testYahoo)
-#testCompaniesArray = np.asarray(testYahoo)
+testYahooArray = np.asarray(testYahoo)
+testCompaniesArray = np.asarray(testYahoo)
 
-sc=StandardScaler()
-yahooArray=sc.fit_transform(yahooArray)
-companiesArray=sc.fit_transform(companiesArray)
+#sc=StandardScaler()
+#yahooArray=sc.fit_transform(yahooArray.reshape(-1,1))
+#companiesArray=sc.fit_transform(companiesArray)
 
-ohe=OneHotEncoder()
+#ohe=OneHotEncoder()
 
-companiesArray=ohe.fit_transform(companiesArray).toarray()
-yahooArray=ohe.fit_transform(yahooArray).toarray()
+#companiesArray=ohe.fit_transform(companiesArray).toarray()
+#yahooArray=ohe.fit_transform(yahooArray).toarray()
 
-x_train,x_test,y_train,y_test = train_test_split(companiesArray,yahooArray,test_size=0.1)
+#x_train,x_test,y_train,y_test = train_test_split(companiesArray,yahooArray,test_size=0.1)
 
 model = keras.Sequential()
 #model.add(keras.layers.Flatten(input_shape=(28,28)))
-model.add(keras.layers.Dense(16, input_dim=187, activation='relu'))
+model.add(keras.layers.Dense(16, input_dim=1, activation='relu'))
 model.add(keras.layers.Dense(12, activation='relu'))
 model.add(keras.layers.Dense(4,activation='softmax'))
 
 model.summary()
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-history = model.fit(x_train,y_train,epochs=40,batch_size=64)
+history = model.fit(companiesArray,yahooArray,epochs=40,batch_size=64)
 
-test_acc = model.evaluate(x_test,y_test)
+test_acc = model.evaluate(testCompaniesArray,testYahooArray)
 
 print("Tested Accuracy: ", test_acc)
 #y_pred = model.predict(x_test)
