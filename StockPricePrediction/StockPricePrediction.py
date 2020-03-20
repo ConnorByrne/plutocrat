@@ -110,7 +110,7 @@ testCompaniesArray = np.asarray(testYahoo, dtype=float)
 
 model = keras.Sequential()
 model.add(keras.layers.Dense(units=1, input_shape=[1]))
-#model.add(keras.layers.Embedding(10000,16))
+model.add(keras.layers.Embedding(10000,16))
 model.compile(optimizer="sgd", loss="mean_squared_error")
 model.fit(trainCompaniesArray,trainYahooArray,epochs=500)
 test_acc=model.evaluate(testCompaniesArray,testYahooArray)
