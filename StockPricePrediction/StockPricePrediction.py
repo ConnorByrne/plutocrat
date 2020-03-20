@@ -77,7 +77,9 @@ for x in myCursor:
     #company = (x[0],alphabet_position(x[4]),alphabet_position(x[5]))
 
     #getting digit representation of semtiment
-    companies.append(alphabet_position(x[4]))
+    #companies.append(alphabet_position(x[4]))
+    #companies.append([4])
+    companies.append([6])
     dateString = (x[5])
     #adding 2 to begining of dates that got cut off
     if(dateString[0]=="0"):
@@ -107,19 +109,25 @@ testCompaniesArray = np.asarray(testYahoo, dtype=float)
 
 
 model = keras.Sequential()
-model.add(keras.layers.Embedding(10000,16))
-model.add(keras.layers.GlobalAveragePooling1D())
+model.add(keras.layers.Dense(units=1, input_shape=[1]))
+#model.add(keras.layers.Embedding(10000,16))
+model.compile(optimizer="sgd", loss="mean_squared_error")
+model.fit(trainCompaniesArray,trainYahooArray,epochs=500)
+test_acc=model.evaluate(testCompaniesArray,testYahooArray)
+print(test_acc)
+#model.add(keras.layers.Embedding(10000,16))
+#model.add(keras.layers.GlobalAveragePooling1D())
 #model.add(keras.layers.Dense(16, input_dim=1, activation='relu'))
-model.add(keras.layers.Dense(12, activation='relu'))
-model.add(keras.layers.Dense(4,activation='softmax'))
+#model.add(keras.layers.Dense(12, activation='relu'))
+#model.add(keras.layers.Dense(4,activation='softmax'))
 
-model.summary()
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+#model.summary()
+#model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-history = model.fit(trainCompaniesArray,trainYahooArray,epochs=40,batch_size=64)
+#history = model.fit(trainCompaniesArray,trainYahooArray,epochs=40,batch_size=64)
 
-test_acc = model.evaluate(testCompaniesArray,testYahooArray)
+#test_acc = model.evaluate(testCompaniesArray,testYahooArray)
 
-print("Tested Accuracy: ", test_acc)
+#print("Tested Accuracy: ", test_acc)
 
 
