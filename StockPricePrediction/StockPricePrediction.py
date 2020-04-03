@@ -67,6 +67,7 @@ myCursor = db.cursor()
 myCursor.execute("SELECT* FROM company, sentiment, company_sentiment WHERE(company.id=company_sentiment.Company_id) AND (sentiment.id=company_sentiment.sentimentData_id)")
 companies=[]
 yahoo = []
+ids=[]
 for x in myCursor:
     #companyid=x[0]
     #name=x[1]
@@ -79,6 +80,7 @@ for x in myCursor:
     #getting digit representation of semtiment
     #companies.append(alphabet_position(x[4]))
     #companies.append([4])
+    ids.append(x[0])
     companies.append([6])
     dateString = (x[5])
     #adding 2 to begining of dates that got cut off
@@ -89,6 +91,7 @@ for x in myCursor:
     yahoo.append(getPrice(symbol,dateString))
     print(alphabet_position(x[4]))
     
+model = keras.models.load_model("model.predict")
 #spilting data into training and testing data    
 trainCompanies = companies[:int(len(companies)*.8)]
 testCompanies = companies[int(len(companies)*.8):]
@@ -108,14 +111,25 @@ testCompaniesArray = np.asarray(testYahoo, dtype=float)
 #testCompanies = keras.preprocessing.sequence.pad_sequences(testCompanies, value=0, padding="post", maxlen=250)
 
 
-model = keras.Sequential()
-model.add(keras.layers.Dense(units=1, input_shape=[1]))
-#model.add(keras.layers.Embedding(units=16))
-model.compile(optimizer="sgd", loss="mean_squared_error")
-model.fit(trainCompaniesArray,trainYahooArray,epochs=500)
-test_acc=model.evaluate(testCompaniesArray,testYahooArray)
-print(test_acc)
-model.save("model.predict")
+#model = keras.Sequential()
+#model.add(keras.layers.Dense(units=1, input_shape=[1]))
+#model.add(keras.layers.Embedding(10000,16))
+#model.compile(optimizer="sgd", loss="mean_squared_error")
+#model.fit(trainCompaniesArray,trainYahooArray,epochs=500)
+#test_acc=model.evaluate(testCompaniesArray,testYahooArray)
+#print(test_acc)
+#model.save("model.predict")
+predictions=model.predict(trainCompaniesArray)
+loopCursor=db.cursor()
+for id, p in zip(ids, predictions):
+    prediction=str(p)
+    idString=str(id)
+    query="UPDATE sentiment SET prediction='"+prediction+"' WHERE id=+"+idString+";"
+    loopCursor.execute(query)
+    
+
+
+
 #model.add(keras.layers.Embedding(10000,16))
 #model.add(keras.layers.GlobalAveragePooling1D())
 #model.add(keras.layers.Dense(16, input_dim=1, activation='relu'))
@@ -130,5 +144,3 @@ model.save("model.predict")
 #test_acc = model.evaluate(testCompaniesArray,testYahooArray)
 
 #print("Tested Accuracy: ", test_acc)
-
-
