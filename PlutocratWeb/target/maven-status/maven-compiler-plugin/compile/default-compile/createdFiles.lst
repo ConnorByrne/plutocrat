@@ -1,0 +1,8 @@
+net\plutocrate\config\WebMvcConfig.class
+net\plutocrat\main\CompanyRepository.class
+net\plutocrat\main\CompanyService.class
+net\plutocrat\main\CompanyController.class
+net\plutocrat\main\Sentiment.class
+net\plutocrat\main\Company.class
+net\plutocrate\config\WebAppIntialiser.class
+net\plutocrate\config\JpaConfig.class
