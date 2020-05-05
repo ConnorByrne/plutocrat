@@ -1,7 +1,7 @@
 import mysql.connector
 import tensorflow as td
 from tensorflow import keras
-#from keras.models import Sequential
+
 #from keras.layers import Dense
 import numpy as np
 import mysql.connector
@@ -38,7 +38,6 @@ def getPrice(symbol,dateString):
         #isolating close price
         prediction = pd.to_numeric(df['Close'])
         price1=prediction.iloc[0]
-
         #getting financial data for the next day.
         start = start+timedelta(days=1)
         end = start
@@ -69,29 +68,28 @@ companies=[]
 yahoo = []
 ids=[]
 for x in myCursor:
-    #companyid=x[0]
-    #name=x[1]
-    #symbol=x[2]
-    #sentimentid=x[3]
-    #sentimentdata=x[4]
-    #sentimentdate=x[5]
-    #company = (x[0],alphabet_position(x[4]),alphabet_position(x[5]))
-
-    #getting digit representation of semtiment
-    #companies.append(alphabet_position(x[4]))
-    #companies.append([4])
+    #print("companyid="+str(x[0]))
+    #print("name="+str(x[1]))
+    #print("symbol="+str(x[2]))
+    #print("sentimentid"+str(x[3]))
+    #print("sentiment data"+str(x[4]))
+    #print("sentiment date"+str(x[5]))
+    #print("positivity="+str(x[6]))
+    
     ids.append(x[0])
-    companies.append([6])
-    dateString = (x[5])
+    sentimentid=x[3]
+    companies.append([7])
+    dateString = (x[6])
     #adding 2 to begining of dates that got cut off
     if(dateString[0]=="0"):
         dateString = "2"+dateString
     symbol=x[2]
     #getting price change
     yahoo.append(getPrice(symbol,dateString))
-    print(alphabet_position(x[4]))
+    print(yahoo)
+    #print(alphabet_position(x[5]))
     
-model = keras.models.load_model("model.predict")
+#model = keras.models.load_model("model.predict")
 #spilting data into training and testing data    
 trainCompanies = companies[:int(len(companies)*.8)]
 testCompanies = companies[int(len(companies)*.8):]
@@ -113,34 +111,37 @@ testCompaniesArray = np.asarray(testYahoo, dtype=float)
 
 #model = keras.Sequential()
 #model.add(keras.layers.Dense(units=1, input_shape=[1]))
-#model.add(keras.layers.Embedding(10000,16))
-#model.compile(optimizer="sgd", loss="mean_squared_error")
-#model.fit(trainCompaniesArray,trainYahooArray,epochs=500)
-#test_acc=model.evaluate(testCompaniesArray,testYahooArray)
-#print(test_acc)
-#model.save("model.predict")
+#from keras.models import Sequential
+#from keras.layers.core import Dense, Activation, Dropout
+#from keras.layers.recurrent import LSTM
+#model = keras.Sequential()
+#model.add(keras.layers.Dense(units=1))
+#model.add(keras.layers.LSTM(50,return_sequences=True))
+#model.add(keras.layers.Dropout(0.2))
+#model.add(keras.layers.LSTM(100, return_sequences=False))
+#model.add(keras.layers.Dropout(0.2))
+#model.add(keras.layers.Dense(units=1))
+#model.add(keras.layers.Activation('linear'))
+
+model=keras.Sequential()
+model.add(keras.layers.Dense(1, input_shape=[1]))
+model.add(keras.layers.Dense(50))
+model.add(keras.layers.Dense(100))
+model.add(keras.layers.Dense(1))
+
+model.compile(optimizer="sgd", loss="mean_squared_error")
+model.fit(trainCompaniesArray,trainYahooArray,epochs=500)
+test_acc=model.evaluate(testCompaniesArray,testYahooArray)
+print(test_acc)
+model.save("model.predict")
 predictions=model.predict(trainCompaniesArray)
 loopCursor=db.cursor()
 for id, p in zip(ids, predictions):
     prediction=str(p)
+    print(prediction)
     idString=str(id)
-    query="UPDATE sentiment SET prediction='"+prediction+"' WHERE id=+"+idString+";"
+    query="UPDATE sentiment SET prediction='"+prediction+"' WHERE id="+idString+";"
     loopCursor.execute(query)
     
 
 
-
-#model.add(keras.layers.Embedding(10000,16))
-#model.add(keras.layers.GlobalAveragePooling1D())
-#model.add(keras.layers.Dense(16, input_dim=1, activation='relu'))
-#model.add(keras.layers.Dense(12, activation='relu'))
-#model.add(keras.layers.Dense(4,activation='softmax'))
-
-#model.summary()
-#model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-#history = model.fit(trainCompaniesArray,trainYahooArray,epochs=40,batch_size=64)
-
-#test_acc = model.evaluate(testCompaniesArray,testYahooArray)
-
-#print("Tested Accuracy: ", test_acc)
